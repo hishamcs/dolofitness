@@ -1,0 +1,22 @@
+{% load static %}
+<header class="main-header navbar">
+    <div class="col-search">
+    </div>
+    <div class="col-nav">
+        <ul class="nav">
+            
+            
+            
+            
+            <li class="dropdown nav-item">
+                <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownAccount"
+                    aria-expanded="false"> <img class="img-xs rounded-circle"
+                        src="{% static 'assets_1/imgs/people/avatar2.jpg' %}" alt="User"></a>
+                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownAccount">
+                    <a class="dropdown-item text-danger" href="{% url 'ad_logout' %}"><i
+                            class="material-icons md-exit_to_app"></i>Logout</a>
+                </div>
+            </li>
+        </ul>
+    </div>
+</header>

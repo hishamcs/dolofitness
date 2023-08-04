@@ -1,0 +1,55 @@
+{% extends 'admn/base.html' %}
+{% load static %}
+{% block content %}
+<section class="content-main">
+    <div class="row">
+        <div class="col-9">
+            <div class="content-header">
+                <h2 class="content-title">Add New Brand</h2>
+            </div>
+        </div>
+        <div class="col-lg-8">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h4>Brand Details</h4>
+                </div>
+                <div class="card-body">
+                    <form method='post' enctype="multipart/form-data" id='brandForm'>
+                        {% csrf_token %}
+                        {{form.as_p}}
+                        <button type="submit" class="btn btn-primary mt-5">Submit</button>
+                    </form>
+                </div>
+            </div> <!-- card end// -->
+            
+        </div>
+       
+    </div>
+</section> <!-- content-main end// -->
+
+
+
+
+{% endblock content %}
+
+{% block script %}
+<script>
+    $(document).on('submit', '#brandForm',function(e) {
+        e.preventDefault()
+        var brandname = document.getElementById('id_brand_name').value.trim()
+        if (brandname.length == 0 || brandname.length < 3) {
+            swal({
+                title:'Warning',
+                text:'Please enter min 3 charactes for the name',
+                icon:'warning'
+            })
+            return
+        }
+        this.submit();
+    })
+</script>
+
+
+{% endblock script %}
+
+

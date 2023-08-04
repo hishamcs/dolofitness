@@ -1,0 +1,84 @@
+{% extends 'admn/base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="content-main">
+    <div class="content-header">
+        <div>
+            <h2 class="content-title card-title">User List</h2>
+        </div>
+    </div>
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="table-responsive">
+                <div class="table-responsive" id='usertableBlock'>
+
+                    <table class="table align-middle table-nowrap" id='userTable'>
+                        {% csrf_token %}
+                        <thead class="table-light">
+                            <tr>
+                                <th class="align-middle text-center" scope="col">Username</th>
+                                <th class="align-middle text-center" scope="col">Email</th>
+                                <th class="align-middle text-center" scope="col">Phone Number</th>
+                                <th class="align-middle text-center" scope="col">Active</th>
+                                <th class="align-middle text-center" scope="col"></th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for user in users %}
+                            <tr style="border-bottom: 1px solid rgb(165, 162, 162) !important; ">
+
+                                <td style="vertical-align: middle" class="text-center">
+                                    <a href="" class="fw-bold"> {{user.username}}</a>
+                                </td>
+                                <td style="vertical-align: middle" class="text-center">{{user.email}}</td>
+                                <td style="vertical-align: middle" class="text-center">{{user.phone_number}}</td>
+                                <td style="vertical-align: middle" class="text-center">
+                                    {% if user.is_blocked %}
+                                    <span class="badge rounded-pill alert-warning">Blocked</span>
+                                    {% else %}
+                                    <span class="badge rounded-pill alert-success">Active</span>
+                                    {% endif %}
+                                </td>
+                                <td style="vertical-align: middle" class="text-center">
+                                    {% if not user.is_superuser %}
+                                        {% if user.is_blocked %}
+                                            <a class="btn btn-sm font-sm btn-outline-dark rounded" id='user-deact' data-user-id="{{user.id}}">Unblock</a>
+                                        {% else %}
+                                            <a class="btn btn-sm font-sm btn-outline-danger rounded" id='user-deact' data-user-id="{{user.id}}">Block</a>
+                                    {% endif %}
+                                    {% endif %}
+                                </td>
+
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                        
+                    </table>
+                </div>
+            </div>
+
+        </div> <!-- card-body end// -->
+    </div> <!-- card end// -->
+</section>
+
+
+{% endblock content %}
+
+
+{% block script %}
+
+<script>
+    $('#userTable').DataTable({
+        paging:true,
+        pageLength:10,
+        lengthChange:true,
+        autoWidth:true,
+        searching:true,
+        bInfo:true,
+        bSort:false,
+    })
+</script>
+
+{% endblock script %}

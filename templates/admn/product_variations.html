@@ -1,0 +1,101 @@
+{% extends 'admn/base.html' %}
+{% load static %}
+{% block content %}
+<section class="content-main">
+    <div class="content-header">
+        <div>
+            <h2 class="content-title card-title">Products Variations</h2>
+        </div>
+        <div>
+            <a href="{% url 'ad_add_product_variations' %}" class="btn btn-primary btn-sm rounded"><i class="material-icons md-add"
+                    style="vertical-align: middle; font-size:22px"></i>Add New Variations</a>
+        </div>
+    </div>
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="table-responsive">
+                <div class="table-responsive" id='pro-var-block'>
+                    <table class="table align-middle table-nowrap" id='productVariationTable'>
+                        <thead class="table-light">
+                            <tr>
+                                <th class="align-middle text-center" scope="col">Image</th>
+                                <th class="align-middle text-center" scope="col">Product Name</th>
+                                <th class="align-middle text-center" scope="col">Price</th>
+                                <th class="align-middle text-center" scope="col">Stock</th>
+                                <th class="align-middle text-center" scope="col">Status</th>
+                                {% comment %} <th class="align-middle text-center" scope="col">Category</th> {% endcomment %}
+                                <th class="align-middle text-center" scope="col">Action</th>
+                            </tr>
+                        </thead>
+                            {% csrf_token %}
+                        <tbody>
+                            {% for product_variation in product_variations %}
+                            <tr style="border-bottom: 1px solid rgb(165, 162, 162) !important; ">
+
+                                <td style="vertical-align: middle" class="text-center">
+                                    {% if product_variation.product.image %}
+                                    <img src="{{product_variation.product.image.url}}" class="img-sm img-thumbnail" alt="Item">
+                                    {% else %}
+                                    <img src="{% static 'assets_1/imgs/items/container.jpg ' %}" class="img-sm img-thumbnail" alt="Item">
+                                    {% endif %}
+                                </td>
+                                <td style="vertical-align: middle" class="text-center">
+                                    <a href="" class="fw-bold"> {{product_variation.product.product_name}}</a>
+                                    <p class='font-xs'>
+                                        Flavour : {{product_variation.flavour}}
+                                        <br>
+                                        Weight  : {{product_variation.weight}}
+                                    </p>
+                                </td>
+                                <td style="vertical-align: middle" class="text-center">₹{{product_variation.price}}</td>
+                                <td style="vertical-align: middle" class="text-center">{{product_variation.quantity}}</td>
+                                <td style="vertical-align: middle" class="text-center">
+                                    {% if product_variation.is_active %}
+                                    <span class="badge rounded-pill alert-success">Active</span>
+                                    {% else %}
+                                    <span class="badge rounded-pill alert-warning">Deactive</span>
+                                    {% endif %}
+                                </td>
+                                {% comment %} <td style="vertical-align: middle" class="text-center">{{product.category}}</td> {% endcomment %}
+                                <td style="vertical-align: middle" class="text-center">
+                                    <a href="{% url 'ad_edit_product_variations' product_variation.id %}" class="btn btn-sm font-sm rounded btn-outline-success">
+                                        Edit
+                                    </a>
+                                    <a class="btn btn-sm font-sm btn-outline-dark rounded" id='prod-var-del' data-productvariation-id="{{product_variation.id}}">
+                                        Delete
+                                    </a>
+                                    {% if product_variation.is_active %}
+                                        <a id='prod-var-deact' class="btn btn-sm font-sm btn-outline-warning rounded" data-productvariation-id="{{product_variation.id}}">Deactivate</a>
+                                    {% else %}
+                                    <a id='prod-var-deact' class="btn btn-sm font-sm btn-outline-primary rounded" data-productvariation-id="{{product_variation.id}}">Activate</a>
+                                    {% endif %}
+                                </td>
+
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                        
+                    </table>
+                </div>
+            </div>
+
+        </div> <!-- card-body end// -->
+    </div> <!-- card end// -->
+</section>
+{% endblock content %}
+
+
+{% block script  %}
+<script>
+    $('#productVariationTable').DataTable({
+        paging:true,
+        pageLength:10,
+        lengthChange:true,
+        autoWidth:true,
+        searching:true,
+        bInfo:true,
+        bSort:false,
+    });
+</script>
+
+{% endblock script  %}

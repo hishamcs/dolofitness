@@ -1,0 +1,96 @@
+{% extends 'admn/base.html' %}
+{% load static %}
+{% block content %}
+
+<section class="content-main" id='order-block'>
+    <div class="content-header">
+        <div>
+            <h2 class="content-title card-title">OrderItems-History</h2>
+        </div>
+    </div>
+    {% if orders %}
+    <div class="card mb-4">
+        
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover" id='ordHisryTable'>
+                    <thead>
+                        <tr>
+                            <th scope="col" class="text-center">#Order Number</th>
+                            <th scope="col" class="text-center">Ordered Account</th>
+                            <th scope="col" class="text-center">Billing Name</th>
+                            <th scope="col" class="text-center">Image</th>
+                            <th scope="col" class="text-center">Product</th>
+                            <th scope="col" class="text-center">Qty</th>
+                            <th scope="col" class="text-center">TotalPrice</th>
+                            <th scope="col" class="text-center">Order Date</th>
+                            <th scope="col" class="text-center">Payment method</th>
+                            <th scope="col" class="text-center">Status</th>
+                            <th scope="col" class="text-center"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for orderitem in orders %}
+                        <tr>
+                            <td class="text-center" style="vertical-align: middle">{{orderitem.order.order_number}}</td>
+                            <td class="text-center" style="vertical-align: middle">{{orderitem.order.user}}</td>
+                            <td class="text-center" style="vertical-align: middle">{{orderitem.order.address.full_name}}</td>
+                            <td class="text-center">
+                                <img src="{{orderitem.product_variation.product.image.url}}" class="img-sm img-thumbnail" alt="Item">
+                            </td>
+                            <td style="vertical-align: middle" class="text-center">
+                                <a href="" class="fw-bold"> {{orderitem.product_variation.product.product_name}}</a>
+                                <p class='font-xs'>
+                                    Flavour : {{orderitem.product_variation.flavour}}
+                                    <br>
+                                    Weight  : {{orderitem.product_variation.weight}}
+                                </p>
+                            </td>
+                            <td class="text-center" style="vertical-align: middle">{{orderitem.quantity}}</td>
+                            <td class="text-center" style="vertical-align: middle">₹ {{orderitem.total}}</td>
+                            <td class="text-center" style="vertical-align: middle">{{orderitem.order.order_date}}</td>
+                            <td class="text-center" style="vertical-align: middle">{{orderitem.order.payment.payment_method}}</td>
+                            <td class="text-center" style="vertical-align: middle">{{orderitem.status}}</td>
+
+                            <td class="text-center align-middle">
+                                {% if orderitem.status == 'Returned' %}
+                                    <span class='badge rounded-pill alert-dark text-dark'>Amount refunded to wallet</span>
+                                {% elif orderitem.status == 'Delivered' %}
+                                <span class='badge rounded-pill alert-info text-info'>Paid</span>
+                                {% else %}
+                                    {% if orderitem.order.payment.payment_method != 'Cash On Delivery' %}
+                                    <span class='badge rounded-pill alert-dark text-dark'>Amount refunded to wallet</span> 
+                                    {% endif %}
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div> <!-- table-responsive //end -->
+        </div> <!-- card-body end// -->
+    </div> <!-- card end// -->
+    {% else %}
+    <div>
+        <h4>There is no Orders</h4>
+    </div>
+    {% endif %}
+</section> <!-- content-main end// -->
+
+{% endblock content %}
+
+{% block script %}
+
+<script>
+    $('#ordHisryTable').DataTable({
+        paging:true,
+        pageLength:10,
+        lengthChange:true,
+        autoWidth:true,
+        searching:true,
+        bInfo:true,
+        bSort:false,
+    })
+</script>
+
+{% endblock script %}

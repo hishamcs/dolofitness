@@ -1,0 +1,111 @@
+{% extends 'admn/base.html' %}
+{% load static %}
+{% block content %}
+<section class="content-main">
+    <div class="row">
+        <div class="col-9">
+            <div class="content-header">
+                <h2 class="content-title">Add New Product</h2>
+            </div>
+        </div>
+        <div class="col-lg-8">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h4>Product Details</h4>
+                </div>
+                <div class="card-body">
+                    <form method='post' enctype="multipart/form-data" id='productVariationForm'>
+                        {% csrf_token %}
+                        {{form.as_p}}
+                        
+                        
+                        
+                        
+                        
+                        <button type="submit" class="btn btn-primary mt-14">Submit</button>
+                        
+                    </form>
+                </div>
+            </div> <!-- card end// -->
+            
+        </div>
+       
+    </div>
+</section> <!-- content-main end// -->
+
+
+
+{% endblock content %}
+
+
+{% block script %}
+<script>
+    $(document).on('submit', '#productVariationForm', function(e) { 
+        e.preventDefault()
+        var flavour = document.getElementById('id_flavour').value.trim()
+        var weight = document.getElementById('id_weight').value.trim()
+        var weightParts = weight.match(/^([\d.]+)\s*(g|kg)$/i);
+        
+        if (flavour.length == 0 || flavour.length < 3 || !/^[A-Za-z]+$/.test(flavour)) {
+            swal({
+                title:"Warning",
+                text:'flavour should contain atleast 3 charactes and exclude digits',
+                icon:'warning',
+            })
+            return
+        }
+
+        if(!weightParts) {
+            swal({
+                title:'Warning',
+                text:'please use the format "500 g" or "1 kg" for weight',
+                icon:'warning',
+            })
+            return
+        }
+        var weightNumericalValue = parseFloat(weightParts[1]);
+        var weightUnit = weightParts[2].toLowerCase();
+
+        if(isNaN(weightNumericalValue) || weightNumericalValue <= 0) {
+            swal({
+                title:'Warning',
+                text:'Weight must be a positive numerical value',
+                icon:'warning',
+            })
+            return
+        }
+        if(weightUnit !== 'g' && weightUnit !== 'kg') {
+            swal({
+                title:'Warning',
+                text:'Please Use "g" or "kg" as weight unit',
+                icon:'warning',
+            })
+            return
+        }
+
+        var price = document.getElementById('id_price').value
+        if (price <= 0) {
+            swal({
+                title:'Warning',
+                text:'Price should be greater than zero',
+                icon:'warning',
+            })
+            return
+        }
+
+        var qty = document.getElementById('id_quantity').value
+        if (qty < 0){
+            swal({
+                title:'Warning',
+                text:'Quantity cant be negative it mustbe be zero or greater',
+                icon:'warning',
+            })
+            return
+        }
+        this.submit();
+
+    })
+</script>
+
+
+{% endblock script %}

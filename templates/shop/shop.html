@@ -1,0 +1,351 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+
+
+
+
+
+
+
+
+
+<main class="main">
+    <div class="page-header breadcrumb-wrap">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="{% url 'index' %}" rel="nofollow">Home</a>
+                <span></span> Shop
+                {% if category != None%}
+                <span></span>{{category}}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <section class="mt-50 mb-50">
+        <div class="container">
+            <div class="row flex-row-reverse">
+                <div class="col-lg-9">
+                    <div class="shop-product-fillter" id='shop-container'>
+                        <div class="totall-product">
+                            <p> We found <strong class="text-brand" id='total-products-count'>{{products_count}}</strong> items for you{% if keyword %}r search :-<span class='alert-danger text-danger'>{{keyword}}</span>{% endif %}
+                            </p>
+                        </div>
+                        {% comment %} <div class="sort-by-product-area">
+                            <div class="sort-by-cover mr-10">
+                                <div class="sort-by-product-wrap">
+                                    <div class="sort-by">
+                                        <span><i class="fi-rs-apps"></i>Show:</span>
+                                    </div>
+                                    <div class="sort-by-dropdown-wrap">
+                                        <span> 50 <i class="fi-rs-angle-small-down"></i></span>
+                                    </div>
+                                </div>
+                                <div class="sort-by-dropdown">
+                                    <ul>
+                                        <li><a class="active" href="#">50</a></li>
+                                        <li><a href="#">100</a></li>
+                                        <li><a href="#">150</a></li>
+                                        <li><a href="#">200</a></li>
+                                        <li><a href="#">All</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="sort-by-cover">
+                                <div class="sort-by-product-wrap">
+                                    <div class="sort-by">
+                                        <span><i class="fi-rs-apps-sort"></i>Sort by:</span>
+                                    </div>
+                                    <div class="sort-by-dropdown-wrap">
+                                        <span> Featured <i class="fi-rs-angle-small-down"></i></span>
+                                    </div>
+                                </div>
+                                <div class="sort-by-dropdown">
+                                    <ul>
+                                        <li><a class="active" href="#">Featured</a></li>
+                                        <li><a href="#">Price: Low to High</a></li>
+                                        <li><a href="#">Price: High to Low</a></li>
+                                        <li><a href="#">Release Date</a></li>
+                                        <li><a href="#">Avg. Rating</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div> {% endcomment %}
+                    </div>
+                    <div class="row product-grid-3" id='product-container'>
+                        <p class='ajaxLoader'>Loading...</p>
+                        {% if products %}
+                        {% for product in products %}
+                        <div class="col-lg-4 col-md-4 col-12 col-sm-6">
+                            <div class="product-cart-wrap mb-30">
+                                <div class="product-img-action-wrap">
+                                    <div class="product-img product-img-zoom">
+                                        <a href="{{product.product.get_url}}">
+                                            <img class="default-img" src="{{product.product.image.url}}" alt="">
+                                            {% comment %} <img class="hover-img" src="{{product.image2.url}}" alt=""> {% endcomment %}
+                                        </a>
+                                    </div>
+                                    {% comment %} <div class="product-action-1">
+                                        <a aria-label="Quick view" class="action-btn hover-up" data-bs-toggle="modal"
+                                            data-bs-target="#quickViewModal-{{forloop.counter}}">
+                                            <i class="fi-rs-search"></i></a>
+                                        <a aria-label="Add To Wishlist" class="action-btn hover-up"
+                                            href="shop-wishlist.html"><i class="fi-rs-heart"></i></a>
+                                        <a aria-label="Compare" class="action-btn hover-up" href="shop-compare.html"><i
+                                                class="fi-rs-shuffle"></i></a>
+                                    </div> {% endcomment %}
+                                    {% comment %} <div class="product-badges product-badges-position product-badges-mrg">
+                                        <span class="hot">Hot</span>
+                                    </div> {% endcomment %}
+                                </div>
+                                <div class="product-content-wrap">
+                                    <div class="product-category">
+                                        <a href="{{product.product.category.get_url}}">{{product.product.category}}</a>
+                                    </div>
+                                    <h2><a href="{{product.product.get_url}}">{{product.product.product_name}}</a></h2>
+                                    {% comment %} <div class="rating-result" title="90%">
+                                        <span>
+                                            <span>90%</span>
+                                        </span>
+                                    </div> {% endcomment %}
+                                    <div class="product-price">
+                                        <span>₹{{product.price}} </span>
+                                        {% comment %} <span class="old-price">$245.8</span> {% endcomment %}
+                                    </div>
+                                    {% comment %} <div class="product-action-1 show">
+                                        <a aria-label="Add To Cart" class="action-btn hover-up" href="shop-cart.html"><i
+                                                class="fi-rs-shopping-bag-add"></i></a>
+                                    </div> {% endcomment %}
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        {% else %}
+                        <div class='pt-20'>
+                            <h2 class='text-danger'>No result found. Please try again...</h2>
+                        </div>
+                        {% endif %}
+                        
+                        
+                        
+                        
+                    </div>
+                    <!--pagination-->
+                    <div class="pagination-area mt-15 mb-sm-5 mb-lg-0" id='product-paginator'>
+                        {% if  products.has_other_pages %}
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination justify-content-start">
+                                {% if products.has_previous %}
+                                <li class="page-item"><a class="page-link" href="?page={{products.previous_page_number}}"><i
+                                    class="fi-rs-angle-double-small-left"></i></a></li>
+                                {% else %}
+                                <li class="page-item disabled"><a class="page-link" ><i
+                                    class="fi-rs-angle-double-small-left"></i></a></li>
+                                {% endif %}
+
+                                {% for i in products.paginator.page_range %}
+                                    {% if products.number == i %}
+                                        <li class="page-item active"><a class="page-link" href="#">{{i}}</a></li>
+                                    {% else %}
+                                        <li class="page-item"><a class="page-link" href="?page={{i}}">{{i}}</a></li>
+                                    {% endif %}
+                                {% endfor %}
+
+                                {% if products.has_next %}
+                                        <li class="page-item"><a class="page-link" href="?page={{products.next_page_number}}"><i
+                                                    class="fi-rs-angle-double-small-right"></i></a></li>
+                                {% else %}
+                                        <li class="page-item disabled"><a class="page-link" href="#"><i
+                                                    class="fi-rs-angle-double-small-right"></i></a></li>
+                                {% endif %}
+                        
+                            </ul>
+                        </nav>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col-lg-3 primary-sidebar sticky-sidebar">
+                    <div class="widget-category mb-30">
+                        <h5 class="section-title style-1 mb-30 wow fadeIn animated">Category</h5>
+                        <ul class="categories">
+                            <li><a href="{% url 'shop' %}">All Products</a></li>
+                            {% for category in links %}
+                            <li><a href="{{category.get_url}}">{{category}}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+
+                    {% comment %}  {% endcomment %}
+
+
+                    {% comment %} <div class="widget-category mb-30">
+                        <h5 class="section-title style-1 mb-30 wow fadeIn animated">Filter by Price</h5>
+                        <label class="fw-900">Price</label>
+                            
+                            <div class="form-check">
+                                <input class="filter-checkbox" type="range" min='{{min_max_price.price__min}}' max='{{min_max_price.price__max}}' oninput='maxPrice.value=this.value' id='rangeInput' value='{{min_max_price.price__min}}' />
+                                <p>Rs: {{min_max_price.price__min}} - {{min_max_price.price__max}}</p>
+                                <label class="form-check-label mt-15" for="flexCheckDefault">
+                                    <input class="filter-checkbox" type="number" id='maxPrice' onkeyup='rangeInput.value=this.value' value='{{min_max_price.price__min}}' min='{{min_max_price.price__min}}' max='{{min_max_price.price__max}}' />
+                                </label>
+                                <div class='mt-20'>
+                                    <button class='btn btn-info btn-sm'>Check</button>
+                                </div>
+                            </div>
+                        
+                    </div> {% endcomment %}
+
+
+
+
+
+                    {% comment %}  {% endcomment %}
+
+
+                    <!-- Fillter By Price -->
+                    <div class="sidebar-widget price_range range mb-30">
+                        <div class="widget-header position-relative mb-20 pb-10">
+                            <h5 class="widget-title mb-10">Filter</h5>
+                            <div class="bt-1 border-color-1"></div>
+                        </div>
+                        <div class="price-filter mb-10">
+                            <label class="fw-900">Price</label>
+                            
+                            <div class="form-check">
+                                <input class="filter-checkbox" type="range" min='{{min_max_price.price__min}}' max='{{min_max_price.price__max}}' oninput='maxPrice.value=this.value' id='rangeInput' value='{{min_max_price.price__min}}' />
+                                <p>Rs: {{min_max_price.price__min}} - {{min_max_price.price__max}}</p>
+                                <label class="form-check-label mt-15" for="flexCheckDefault">
+                                    <input class="filter-checkbox" type="number" id='maxPrice' onkeyup='rangeInput.value=this.value' value='{{min_max_price.price__min}}' min='{{min_max_price.price__min}}' max='{{min_max_price.price__max}}' />
+                                </label>
+                                
+                            </div>  
+                            
+                            
+                                
+                        </div>
+                        <div class="list-group">
+                            <div class="list-group-item mb-10 mt-10">
+                                <label class="fw-900">Flavours</label>
+                                
+                                {% for flavour in flavours %}
+                                <div class="form-check">
+                                    <input class="form-check-input filter-checkbox" type="checkbox" id="flexCheckDefault" data-filter='flavour' value="{{flavour.flavour}}">
+                                    <label class="form-check-label" for="flexCheckDefault">
+                                      {{flavour.flavour}}
+                                
+    
+                                    </label>
+                                </div>
+                                {% endfor %}
+                                <label class="fw-900 mt-15">Brands</label>
+                                {% for brand in brands %}
+                                <div class="form-check">
+                                    <input class="form-check-input filter-checkbox" type="checkbox" id="flexCheckDefault" data-filter='brand' value="{{brand.brand__id}}">
+                                    <label class="form-check-label" for="flexCheckDefault">
+                                      {{brand.brand__brand_name}}
+                                      
+                                    </label>
+                                </div>
+                                {% endfor %}
+
+
+                                <label class="fw-900 mt-15">Weights</label>
+                                {% for weight in weights %}
+                                <div class="form-check">
+                                    <input class="form-check-input filter-checkbox" type="checkbox" value="{{weight.weight}}" id="flexCheckDefault" data-filter='weight'>
+                                    <label class="form-check-label" for="flexCheckDefault">
+                                      {{weight.weight}}
+                                    </label>
+                                </div>
+                                {% endfor %}
+
+                            </div>
+                        </div>
+                        <a href="shop-grid-right.html" class="btn btn-sm btn-default" id='filter-button'><i class="fi-rs-filter mr-5"></i>
+                            Fillter</a>
+                    </div>
+                
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+{% endblock content %}
+
+
+
+
+
+{% block script %}
+<script>
+
+$(document).ready(function() {
+    $('.ajaxLoader').hide()
+    $(document).on('click', '#filter-button', function(e) {
+        e.preventDefault();
+        //console.log('button clicked...')
+        var _filterObj = {};
+        var _minPrice = $('#maxPrice').attr('min')
+        var _maxPrice = $('#maxPrice').val()
+        //console.log('minimum value : ', _minPrice)
+        //console.log('maximum value : ', _maxPrice)
+        _filterObj.minPrice = _minPrice
+        _filterObj.maxPrice = _maxPrice
+        
+        $('.filter-checkbox').each(function(index,ele){
+            var _filterVal = $(this).val();
+            var _filterKey = $(this).data('filter');
+            _filterObj[_filterKey] = Array.from(document.querySelectorAll('input[data-filter=' + _filterKey + ']:checked')).map(function(el){
+                return el.value;
+            })
+        })
+        //console.log('object : ', _filterObj)
+        
+        $.ajax({
+            url:"/shop/filter-product/",
+            data:_filterObj,
+            dataType:'json',
+            beforeSend:function(){
+                $('.ajaxLoader').show()
+            },
+            success:function(response){
+                //console.log(response.data)
+                $('#product-container').html(response.data)
+                $('#total-products-count').text(response.products_count)
+                $('#product-paginator').hide()
+                //console.log(response)
+                $('.ajaxLoader').hide()
+                
+            },
+        })
+        
+    })
+
+
+    // price filter
+    $(document).on('blur', '#maxPrice', function(){
+        var _min = $(this).attr('min')
+        var _max = $(this).attr('max')
+        var _value = $(this).val()
+        if (_value < parseInt(_min) || _value > parseInt(_max)) {
+            alert('Values Should be ' + _min +'-' +_max);
+            $(this).val(_min)
+            $(this).focus()
+            $('#rangeInput').val(_min)
+            return false;
+        }
+    })
+
+})
+
+
+
+
+</script>
+
+
+
+
+{% endblock script %}

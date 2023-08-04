@@ -1,0 +1,140 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<main class="main">
+    <div class="page-header breadcrumb-wrap">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="{% url 'index' %}" rel="nofollow">Home</a>
+                <span></span> Account
+                <span></span> Forgot Password change
+            </div>
+        </div>
+    </div>
+    <section class="pt-150 pb-150">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 m-auto">
+                    <div class="row justify-content-center">
+                        
+                        <div class="col-md-8">
+                            {% include 'includes/alerts.html' %}
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h4 class="mb-0">Forgot Password Reset</h4>
+                                        </div>
+                                        <div class="card-body d-flex justify-content-between">
+                                            <div class="col-md-10">
+                                                <form action="{% url 'reset_passw_forget' %}" method="POST" onsubmit='return validatePasswordReset()'>
+                                                    {% csrf_token %}
+                                                    <input type='hidden' name='phone_num' class='form-control' value="{{phone}}">
+                                                    <div class="form-group">
+                                                        <label>Create New Password</label>
+                                                        <input type='password' name='new_password' placeholder='Create New Password' class='form-control' required>
+                                                        
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Confirm Password</label>
+                                                        <input type='password' name='confirm_password' placeholder='Confirm Password' class='form-control' required>
+                                                        
+                                                    </div>
+                                                    
+                                                    <div class="form-group">
+                                                        <button type="submit" class="btn btn-fill-out btn-block hover-up">Submit</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                            
+                                            
+                                        </div>
+                                    </div>
+
+                                    <div class='col-md-8 mt-10' style='display:none' id='password-conditions'>
+                                        <div class="card ">
+                                            <div class="card-header bg-danger">
+                                                <h5 class="mb-0 text-white">Password Conditions</h5>
+                                            </div> 
+                                            <div class='card-body'>
+                                                <p class="card-text">Password should atleast 8 characters long</p>
+                                                <p class="card-text">It should contain atleast one Upper case letter,onelower,and one special character (@#$%^&+=).</p>
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    
+                                
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+
+{% endblock content %}
+
+
+{% block script %}
+<script>
+    function validatePasswordReset() {
+        
+        
+        const newPassword = document.getElementsByName('new_password')[0].value;
+        const confirmPassword = document.getElementsByName('confirm_password')[0].value;
+
+
+        const minLengthPattern = /.{8,}/;
+        const uppercasePattern = /[A-Z]/;
+        const lowercasePattern = /[a-z]/;
+        const digitPattern = /\d/;
+        const specialCharPattern = /[@#$%^&+=]/;
+
+        if (
+            !minLengthPattern.test(newPassword) ||
+            !uppercasePattern.test(newPassword) ||
+            !lowercasePattern.test(newPassword) ||
+            !digitPattern.test(newPassword) ||
+            !specialCharPattern.test(newPassword)
+            ) {
+                
+                swal({
+                    title:'Weak Password',
+                    icon:'warning',
+                    text:'Please follow the password conditions',
+                    dangerMode:true,
+                    button:false,
+                    timer:4000,
+                }).then(function(){
+                    $('#password-conditions').css({
+                        'display':'block'
+                    })
+                    
+                })
+                return false
+                
+        }
+
+        if (newPassword !== confirmPassword) {
+            swal({
+                title:'password does not match',
+                icon:'warning',
+                text:'New password and confirm password doesnot match...',
+                dangerMode:true,
+                button:false,
+                timer:4000,
+            })
+            return false
+        }
+        return true;
+        
+    }
+
+</script>
+
+
+{% endblock script %}

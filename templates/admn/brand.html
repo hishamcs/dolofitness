@@ -1,0 +1,80 @@
+{% extends 'admn/base.html' %}
+{% load static %}
+{% block content %}
+<section class="content-main">
+    <div class="content-header">
+        <div>
+            <h2 class="content-title card-title">Categories</h2>
+        </div>
+        <div>
+            <a href="{% url 'ad_add_brand' %}" class="btn btn-primary btn-sm rounded"><i class="material-icons md-add"
+                    style="vertical-align: middle; font-size:22px"></i>Add new Brand</a>
+        </div>
+    </div>
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="table-responsive">
+                <div class="table-responsive" id='brand-block'>
+                    <table class="table align-middle table-nowrap" id='brandTable'>
+                        <thead class="table-light">
+                            <tr>
+                                <th class="align-middle text-center" scope="col" style='width:20%'>Image</th>
+                                <th class="align-middle text-center" scope="col" style='width:20%'>Name</th>
+                                <th class="align-middle text-center" scope="col" style='width:40%'>Description</th>
+                                <th class="align-middle text-center" scope="col" style='width:40%'></th>
+                            </tr>
+                        </thead>
+                        {% csrf_token %}
+                        <tbody>
+                            {% for brand in brands %}
+                            <tr style="border-bottom: 1px solid rgb(165, 162, 162) !important; ">
+                                
+                                <td style="vertical-align: middle" class="text-center">
+                                    {% if brand.brand_image %}
+                                    <img src="{{brand.brand_image.url}}" class="img-sm img-thumbnail" alt="Item">
+                                    {% endif %}
+                                </td>
+                                <td style="vertical-align: middle" class="text-center">
+                                     {{brand.brand_name}}
+                                </td>
+                                <td style="vertical-align: middle" class="text-center">{{brand.description}}</td>
+                                <td style="vertical-align: middle" class="d-flex justify-content-between">
+                                    <a href="{% url 'ad_edit_brand' brand.id %}" class="btn btn-sm font-sm rounded btn-outline-success">
+                                        Edit
+                                    </a>
+                                    <a class="btn btn-sm font-sm btn-outline-dark rounded" id='del-brand' data-brand-id="{{brand.id}}">
+                                        Delete
+                                    </a>
+                                
+                                </td>
+                                
+                                
+                                
+
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                        
+                    </table>
+                </div>
+            </div>
+
+        </div> <!-- card-body end// -->
+    </div> <!-- card end// -->
+</section>
+{% endblock content %}
+
+{% block script %}
+<script>
+    $('#brandTable').DataTable({
+        paging:true,
+        pageLength:10,
+        lengthChange:true,
+        autoWidth:true,
+        searching:true,
+        bInfo:true,
+        bSort:false,
+    })
+</script>
+
+{% endblock script %}

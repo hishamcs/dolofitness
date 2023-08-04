@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<main class="main">
+    <div class="page-header breadcrumb-wrap">
+        <div class="container">
+
+            <div class="breadcrumb">
+                <a href="" rel="nof{% url 'index' %}ollow">Home</a>
+                <span></span> Pages
+                <span></span> Signup
+            </div>
+        </div>
+    </div>
+    <section class="pt-150 pb-150">
+        <div class="container">
+
+            <div class="row">
+                <div class="col-lg-6 m-auto">
+
+                    <div class="row">
+                        {% include 'includes/alerts.html' %}
+                        <div class="login_wrap widget-taber-content p-30 background-white border-radius-5">
+
+                            <div class="padding_eight_all bg-white">
+
+                                <div class="heading_s1">
+
+                                    <h3 class="mb-30">Create an Account</h3>
+                                </div>
+
+                                <form method="post" id='signupForm'>
+                                    {% csrf_token %}
+                                    <div class="form-group">
+                                        {{form.username}}
+                                    </div>
+                                    <div class="form-group">
+                                        {{form.email}}
+                                    </div>
+                                    <div class="form-group">
+                                        {{form.phone_number}}
+                                    </div>
+                                    <div class="form-group">
+                                        {{form.password}}
+                                    </div>
+                                    <div class="form-group">
+                                        {{form.confirm_password}}
+                                    </div>
+
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-fill-out btn-block hover-up"
+                                            name="login">Submit &amp; Register</button>
+                                    </div>
+                                </form>
+                                {% if form.errors %}
+                                <div class="alert alert-danger mt-4">
+                                    <strong>Error:</strong>
+                                    {% for field in form %}
+                                    {% if field.errors %}
+                                    <div><u>{{ field.label }}:</u></div>
+                                    {% for error in field.errors %}
+                                    <div>{{ error }}</div>
+                                    {% endfor %}
+                                    {% endif %}
+                                    {% endfor %}
+                                </div>
+                                {% endif %}
+
+                                <div class="text-muted text-center">Already have an account? <a
+                                        href="{% url 'user_login' %}">Sign in now</a></div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+
+
+{% endblock content %}
+
+
+{% block script %}
+<script>
+$(document).on('submit', '#signupForm', function(e) {
+    e.preventDefault()
+    var username = document.getElementById('id_username').value.trim()
+    if(username.length == 0 || username.length <3) {
+        swal({
+            title:'Warning',
+            text:'Please enter your username(user name needs atlease 3 charactes)',
+            icon:'warning',
+        })
+        return
+    }
+    var mob_number = document.getElementById('id_phone_number').value.trim()
+    if(!mob_number.match(/^\d{10}$/)) {
+        swal({
+            title:'warning',
+            text:'Please enter a valid 10 digit mobile number...',
+            icon:'warning',
+            
+        })
+        return
+    }
+    this.submit();
+})
+</script>
+
+
+{% endblock script %}

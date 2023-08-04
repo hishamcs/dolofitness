@@ -1,0 +1,97 @@
+{% extends 'admn/base.html' %}
+{% load static %}
+{% block content %}
+<section class="content-main">
+    <div class="content-header">
+        <div>
+            <h2 class="content-title card-title">Products List</h2>
+        </div>
+        <div>
+            <a href="{% url 'ad_edit_product' %}" class="btn btn-primary btn-sm rounded"><i class="material-icons md-add"
+                    style="vertical-align: middle; font-size:22px"></i>Add New Product</a>
+        </div>
+    </div>
+    <div class="card mb-4">
+        
+        <div class="card-body">
+            <div class="table-responsive">
+                <div class="table-responsive" id='pro-tab-body'>
+                    <table class="table align-middle table-nowrap" id='productTable'>
+                        <thead class="table-light">
+                            <tr>
+                                <th class="align-middle text-center" scope="col">Image</th>
+                                <th class="align-middle text-center" scope="col">Product Name</th>
+                                <th class="align-middle text-center" scope="col">Brand Name</th>
+                                <th class="align-middle text-center" scope="col">Status</th>
+                                <th class="align-middle text-center" scope="col">Category</th>
+                                <th class="align-middle text-center" scope="col">Action</th>
+                            </tr>
+                        </thead>
+                        {% csrf_token %}
+                        <tbody>
+                            {% for product in products %}
+                            <tr style="border-bottom: 1px solid rgb(165, 162, 162) !important; ">
+                                
+                                <td style="vertical-align: middle" class="text-center">
+                                    {% if product.image %}
+                                    <img src="{{product.image.url}}" class="img-sm img-thumbnail" alt="Item">
+                                    {% else %}
+                                    <img src="{% static 'assets_1/imgs/items/container.jpg ' %}" class="img-sm img-thumbnail" alt="Item">
+                                    {% endif %}
+                                </td>
+                                <td style="vertical-align: middle" class="text-center">
+                                    <a href="{% url 'ad_products_variations' product.id %}" class="fw-bold"> {{product.product_name}}</a>
+                                </td>
+                                <td style="vertical-align: middle" class="text-center">{{product.brand.brand_name}}</td>
+                                
+                                <td style="vertical-align: middle" class="text-center">
+                                    {% if product.is_available %}
+                                    <span class="badge rounded-pill alert-success">Active</span>
+                                    {% else %}
+                                    <span class="badge rounded-pill alert-warning">Deactive</span>
+                                    {% endif %}
+                                </td>
+                                <td style="vertical-align: middle" class="text-center">{{product.category}}</td>
+                                <td style="vertical-align: middle" class="text-center">
+                                    <a href="{% url 'ad_edit_product' product.id %}" class="btn btn-sm font-sm rounded btn-outline-success">
+                                        Edit
+                                    </a>
+                                    <a class="btn btn-sm font-sm btn-outline-dark rounded" id='del-product' data-product-id="{{product.id}}">
+                                        Delete
+                                    </a>
+                                    {% if product.is_available %}
+                                    <a class="btn btn-sm font-sm btn-outline-warning rounded" id='deact-product' data-product-id="{{product.id}}">Deactivate</a>
+                                    {% else %}
+                                    <a class="btn btn-sm font-sm btn-outline-primary rounded" id='deact-product' data-product-id="{{product.id}}">Activate</a>
+                                    {% endif %}
+                                </td>
+
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                        
+                    </table>
+                </div>
+            </div>
+
+        </div> <!-- card-body end// -->
+    </div> <!-- card end// -->
+</section>
+{% endblock content %}
+
+
+{% block script %}
+<script>
+    $('#productTable').DataTable({
+        paging:true,
+        pageLength:10,
+        lengthChange:true,
+        autoWidth:true,
+        searching:true,
+        bInfo:true,
+        bSort:false,
+    })
+</script>
+
+
+{% endblock script %}

@@ -1,0 +1,74 @@
+{% extends 'admn/base.html' %}
+{% load static %}
+{% block content %}
+<section class="content-main">
+    <div class="row">
+        <div class="col-9">
+            <div class="content-header">
+                <h2 class="content-title">Add New Product</h2>
+            </div>
+        </div>
+        <div class="col-lg-8">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h4>Product Details</h4>
+                </div>
+                <div class="card-body">
+                    <form method='post' enctype="multipart/form-data" id='productFormm'>
+                        {% csrf_token %}
+                        {{form.as_p}}
+                        
+                        <div id='image-container' class='mt-10'>
+
+                        </div>
+                        
+                        <div class='d-flex justify-content-between mt-10'>
+                        
+                        <button type="submit" class="btn btn-primary mt-5">Submit</button>
+                        <button type="button" class="btn btn-secondary mt-5" id='add-image-butn'>Add Images</button>
+                        </div>
+                    </form>
+                </div>
+            </div> <!-- card end// -->
+            
+        </div>
+       
+    </div>
+</section> <!-- content-main end// -->
+
+
+
+{% endblock content %}
+
+{% block script %}
+<script>
+    var addButton = document.getElementById('add-image-butn')
+    var container = document.getElementById('image-container')
+    var imageCount = 1
+
+    addButton.addEventListener('click', function(){
+        var imageField = document.createElement('input')
+        imageField.type = 'file'
+        imageField.className = 'form-control image-field mt-10'
+        imageField.name = 'pr_images';
+        container.appendChild(imageField)
+        imageCount++
+    });
+
+    $(document).on('submit','#productFormm', function(e) {
+        e.preventDefault()
+        var productName = document.getElementById('id_product_name').value.trim()
+        if (productName.length == 0 || productName.length < 3) {
+            swal({
+                title:'Warning',
+                text:'Product name must have minimum 3 charactes',
+                icon:'warning',
+            })
+            return
+        }
+        this.submit()
+    })
+</script>
+
+{% endblock script %}
+

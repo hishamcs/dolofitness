@@ -1,0 +1,18 @@
+{% if messages %}
+{% for message in messages %}
+<div id="message" class="container">
+    <div {% if message.tags %} class="alert {% if message.level_tag == 'error' %}alert-danger{% else %}alert-{{ message.tags }}{% endif %}" {% endif %} role="alert">
+        {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Error: {% endif %}
+        {{ message }}
+    </div>
+</div>
+{% endfor %}
+{% endif %}
+
+
+
+<script>
+    setTimeout(function(){
+        $('#message').fadeOut('slow')
+        },4000);
+</script>

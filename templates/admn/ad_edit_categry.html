@@ -1,0 +1,54 @@
+{% extends 'admn/base.html' %}
+{% load static %}
+{% block content %}
+<section class="content-main">
+    <div class="row">
+        <div class="col-9">
+            <div class="content-header">
+                <h2 class="content-title">Add New Category</h2>
+            </div>
+        </div>
+        <div class="col-lg-8">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h4>Category Details</h4>
+                </div>
+                <div class="card-body">
+                    <form method='post' enctype="multipart/form-data" id='categoryForm'>
+                        {% csrf_token %}
+                        {{form.as_p}}
+                        <button type="submit" class="btn btn-primary mt-5">Submit</button>
+                    </form>
+                </div>
+            </div> <!-- card end// -->
+            
+        </div>
+       
+    </div>
+</section> <!-- content-main end// -->
+
+
+
+
+{% endblock content %}
+
+{% block script %}
+<script>
+    $(document).on('submit', '#categoryForm',function(e) {
+        e.preventDefault()
+        var categoryname = document.getElementById('id_category_name').value.trim()
+        console.log('categoryname : ', categoryname)
+        if (categoryname.length == 0 || categoryname.length < 3) {
+            swal({
+                title:'Warning',
+                text:'Please enter min 3 charactes for the name',
+                icon:'warning'
+            })
+            return
+        }
+        this.submit();
+    })
+</script>
+
+{% endblock script %}
+        

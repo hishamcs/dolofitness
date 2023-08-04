@@ -1,0 +1,178 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<!-- Modal -->
+
+
+
+
+<main class="main">
+    <section class="home-slider position-relative pt-50">
+        <div class="hero-slider-1 dot-style-1 dot-style-1-position-1">
+            <div class="single-hero-slider single-animation-wrap">
+                <div class="container">
+                    <div class="row align-items-center slider-animated-1">
+                        <img class="animated slider-1-2" src="{% static 'assets/imgs/slider/image1.jpg' %}"
+                                    alt="">
+                    </div>
+                </div>
+            </div>
+
+            <div class="single-hero-slider single-animation-wrap">
+                <div class="container">
+                    <div class="row align-items-center slider-animated-1">
+                        <div class="col-lg-5 col-md-6">
+                            <div class="hero-slider-content-2">
+                                <h4 class="animated">Trade-in offer</h4>
+                                <h2 class="animated fw-900">Recover Faster</h2>
+                                <h1 class="animated fw-900 text-brand">Stay Fit</h1>
+                                <p class="animated">Save more with coupons</p>
+                                <a class="animated btn btn-brush btn-brush-3" href="{% url 'shop' %}"> Shop
+                                    Now </a>
+                            </div>
+                        </div>
+                        <div class="col-lg-7 col-md-6">
+                            <div class="single-slider-img single-slider-img-1">
+                                <img class="animated slider-1-2" src="{% static 'assets/imgs/slider/image2.avif' %}"
+                                    alt="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="single-hero-slider single-animation-wrap">
+                <div class="container">
+                    <div class="row align-items-center slider-animated-1">
+                        <div class="col-lg-5 col-md-6">
+                            <div class="hero-slider-content-2">
+                                <h4 class="animated">Trade-in offer</h4>
+                                <h2 class="animated fw-900">Recover Faster</h2>
+                                <h1 class="animated fw-900 text-brand">Stay Fit</h1>
+                                <p class="animated">Save more with coupons</p>
+                                <a class="animated btn btn-brush btn-brush-3" href="{% url 'shop' %}"> Shop
+                                    Now </a>
+                            </div>
+                        </div>
+                        <div class="col-lg-7 col-md-6">
+                            <div class="single-slider-img single-slider-img-1">
+                                <img class="animated slider-1-3" src="{% static 'assets/imgs/slider/image3.jpg' %}"
+                                    alt="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="slider-arrow hero-slider-1-arrow"></div>
+    </section>
+    <section class="featured section-padding position-relative">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-2 col-md-4 mb-md-3 mb-lg-0">
+                    <div class="banner-features wow fadeIn animated hover-up">
+                        <img src="{% static 'assets/imgs/theme/icons/feature-1.png' %}" alt="">
+                        <h4 class="bg-1">Free Shipping</h4>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4 mb-md-3 mb-lg-0">
+                    <div class="banner-features wow fadeIn animated hover-up">
+                        <img src="{% static 'assets/imgs/theme/icons/feature-2.png' %}" alt="">
+                        <h4 class="bg-3">Online Order</h4>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4 mb-md-3 mb-lg-0">
+                    <div class="banner-features wow fadeIn animated hover-up">
+                        <img src="{% static 'assets/imgs/theme/icons/feature-3.png' %}" alt="">
+                        <h4 class="bg-2">Save Money</h4>
+                    </div>
+                </div>
+
+
+                <div class="col-lg-2 col-md-4 mb-md-3 mb-lg-0">
+                    <div class="banner-features wow fadeIn animated hover-up">
+                        <img src="{% static 'assets/imgs/theme/icons/feature-6.png' %}" alt="">
+                        <h4 class="bg-6">24/7 Support</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="product-tabs section-padding position-relative wow fadeIn animated">
+        <div class="bg-square"></div>
+        <div class="container">
+            <!--End nav-tabs-->
+            <div class="tab-content wow fadeIn animated" id="myTabContent">
+                <div class="tab-pane fade show active" id="tab-one" role="tabpanel" aria-labelledby="tab-one">
+
+                    <div class="row product-grid-4">
+                        {% for product_variation in product_variations %}
+                        <div class="col-lg-3 col-md-4 col-12 col-sm-6">
+                            <div class="product-cart-wrap mb-30">
+                                <div class="product-img-action-wrap">
+                                    <div class="product-img product-img-zoom">
+                                        <a href="{{product_variation.product.get_url}}">
+                                            <img class="default-img" src="{{product_variation.product.image.url}}"
+                                                alt="">
+                                            <img class="hover-img" src="{{product.image2.url}}" alt="">
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="product-content-wrap">
+                                    <div class="product-category">
+                                        <a
+                                            href="{{product_variation.product.category.get_url}}">{{product_variation.product.category}}</a>
+                                    </div>
+                                    <h2><a
+                                            href="{{product_variation.product.get_url}}">{{product_variation.product.product_name}}</a>
+                                    </h2>
+                                    <div class="product-price">
+                                        <span>₹{{product_variation.price}} </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+
+
+
+
+
+
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+
+
+    {% if brands %}
+    <section class="section-padding">
+        <div class="container">
+            <h3 class="section-title mb-20 wow fadeIn animated"><span>Featured</span> Brands</h3>
+            <div class="carausel-6-columns-cover position-relative wow fadeIn animated">
+                <div class="slider-arrow slider-arrow-2 carausel-6-columns-arrow" id="carausel-6-columns-3-arrows">
+                </div>
+                <div class="carausel-6-columns text-center" id="carausel-6-columns-3">
+                    {% for brand in brands %}
+                    <div class="brand-logo">
+                        {% if brand.brand_image %}
+                        <img class="img-grey-hover" src="{{brand.brand_image.url}}" alt="" height="100" width="100">
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+
+
+</main>
+
+
+
+{% endblock content %}

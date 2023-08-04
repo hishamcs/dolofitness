@@ -1,0 +1,276 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<main class="main">
+    <div class="page-header breadcrumb-wrap">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="{% url 'index' %}" rel="nofollow">Home</a>
+                <span></span> Account
+                <span></span> My orders
+            </div>
+        </div>
+    </div>
+    <div id='modalContainer' class='modal-container' style="display:none;position:fixed; z-index:9999;left:0;top:0;width:100%;height:100%;overflow:auto;">
+        <div class='modal-content'>
+            <div class="container"
+                style="margin: 0 auto;width: 50%;padding: 50px;background: #f1f1f1;margin-top: 50px;margin-bottom: 50px;">
+                <div class="row invoice row-printable">
+                    <div class="col-md-12">
+                        <!-- col-lg-12 start here -->
+                        <div class="panel panel-default plain" id="dash_0">
+                            <!-- Start .panel -->
+                            <div class="panel-body p30">
+                                <div class="row">
+                                    <!-- Start .row -->
+                                    <div class="col-lg-6">
+                                        <!-- col-lg-6 start here -->
+                                        <div class="invoice-logo"><img src="{% static 'assets/imgs/theme/Dolo.png' %}"
+                                                alt="Invoice logo" style="max-height: 80px;"></div>
+                                    </div>
+                                    <!-- col-lg-6 end here -->
+                                    <div class="col-lg-6 text-end">
+                                        <!-- col-lg-6 start here -->
+                                        <div class="invoice-from">
+                                            <ul class="list-unstyled order-addr">
+                                                <li><strong>Invoiced To</strong></li>
+                                                <li></li>
+                                                <li></li>
+                                                <li></li>
+                                                <li></li>
+                                                <li></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <!-- col-lg-6 end here -->
+                                    <div class="col-lg-12">
+                                        <!-- col-lg-12 start here -->
+                                        <div class="invoice-details mt25">
+                                            <div class="well">
+                                                <ul class="list-unstyled mb0 order-dt">
+                                                    <li><strong>Order</strong> #</li>
+                                                    <li><strong>Transaction ID</strong></li>
+                                                    <li><strong>Order Date:</strong></li>
+                                                    <li><strong>Status:</strong></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+    
+                                        <div class="invoice-items">
+                                            <div class="table-responsive" style="overflow: hidden; outline: none;"
+                                                tabindex="0">
+                                                <table class="table table-bordered" id="table-prod">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="per60 text-center">Products</th>
+                                                            <th class="per5 text-center">Qty</th>
+                                                            <th class="per17 text-center">Product Price</th>
+                                                            <th class="per18 text-center">Total</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                        
+                                                    </tbody>
+                                                    <tfoot>
+                                                        <tr>
+                                                            <th colspan="3" class="text-right">Sub Total:</th>
+                                                            <th class="text-center " id="sub-tot">₹</th>
+                                                        </tr>
+                                                        <tr>
+                                                            <th colspan="3" class="text-right">Tax:</th>
+                                                            <th class="text-center "id="tax">₹</th>
+                                                        </tr>
+                                                        <tr style='display:none' id ='disc-row'>
+                                                            <th colspan="3" class="text-right">Discount Price :</th>
+                                                            <th class="text-center "id="disc">₹</th>
+                                                        </tr>
+    
+                                                        <tr>
+                                                            <th colspan="3" class="text-right">Grand Total:</th>
+                                                            <th class="text-center " id="grand-total">₹</th>
+                                                        </tr>
+                                                    </tfoot>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div class="invoice-footer mt25">
+                                            <p class="text-center">Thank you for shopping with us!</p>
+                                        </div>
+                                    </div>
+                                    <!-- col-lg-12 end here -->
+                                </div>
+                                <!-- End .row -->
+                            </div>
+                        </div>
+                        <div class='text-center mt-20'>
+                            <a id="closeInvoice" class='btn'>Close</a>
+                        </div>
+                        <!-- End .panel -->
+                    </div>
+                    <!-- col-lg-12 end here -->
+                </div>
+            </div>
+        </div>
+    </diV>
+
+
+
+
+
+
+    <section class="pt-150 pb-150">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 m-auto">
+                    <div class="row">
+                        {% include 'includes/dashboard_sidebar.html' %}
+                        <div class="col-md-8">
+                            {% if orders %}
+                            
+                                
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h5 class="mb-0">Your Order</h5>
+                                        </div>
+                                        <div class="card-body" id='card-bodyy'>
+                                            <div class="table-responsive">
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Order #</th>
+                                                            <th>Biiling Name</th>
+                                                            <th>Billing Address</th>
+                                                            {% comment %} <th>Total Amount</th> {% endcomment %}
+                                                            
+                                                            
+                                                            {% comment %} <th>Invoice</th> {% endcomment %}
+                                                            <th>Order details</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {% for i in orders %}
+                                                        <tr>
+                                                            <td>{{i.order_number}}</td>
+                                                            <td>{{i.address.full_name}}</td>
+                                                            <td>{{i.address.full_address}}</td>
+                                                            {% comment %} <td>{{i.order_total}}</td> {% endcomment %}
+                                                            
+                                                            
+                                                            {% comment %} <td><a id="view-btnn" class="view-oder btn-small d-block" data-order-id="{{i.order_number}}">View</a></td> {% endcomment %}
+                                                            <td>
+                                                                {% comment %} <div class="dropdown text-center">
+                                                                    <a href="#" data-bs-toggle="dropdown" class='' style='width:30px;height:30px'> <i class="fi fi-rs-menu-dots-vertical"></i> </a>
+                                                                    <div class="dropdown-menu">
+                                                                        <a class="dropdown-item" href="{% url 'order_cancel' i.id %}">Order Cancel</a>
+                                                                        <a class="dropdown-item" href="#">Order return</a>
+                                                                        <a class="dropdown-item text-danger" href="#">Delete</a>
+                                                                    </div>
+                                                                </div> {% endcomment %}
+                                                                <a href="{% url 'user_order_details' i.id %}">View Details</a>
+                                                            </td>
+                                                        </tr>
+                                                        {% endfor %}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                
+                                
+                            {% else %}
+                            <div class='text-center'>
+                                <h3> Order detail is empty </h3>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+{% endblock content %}
+
+{% block script %}
+<script>
+    
+
+
+
+
+
+    $(document).on('click', '.view-oder', function(e) {
+        e.preventDefault();
+        $('#table-prod tbody').empty();
+        var order_number = $(this).data('order-id')
+        $('#disc').text(0)
+        $('#disc-row').css({'display':'none'})
+        
+
+        $.ajax({
+            url:"/orders/order-details/",
+            data:{
+                'order_number':order_number,
+            },
+            success:function(response) {
+
+                console.log(response)
+                $("#modalContainer").css({
+                    'display':'block',
+                });
+                $('ul.order-addr li:nth-child(2)').text(response.fullname)
+                $('ul.order-addr li:nth-child(3)').text(response.full_address)
+                $('ul.order-addr li:nth-child(4)').text(response.city+',' +response.state)
+                $('ul.order-addr li:nth-child(5)').text(response.country)
+                $('ul.order-addr li:nth-child(3)').text(response.postcode)
+
+
+                $('ul.order-dt li:nth-child(1)').text('Order #        : '+response.order_number)
+                $('ul.order-dt li:nth-child(2)').text('Transaction ID : '+response.transaction_id)
+                $('ul.order-dt li:nth-child(3)').text('Order Date     : '+response.order_date)
+                $('ul.order-dt li:nth-child(4)').text('Status         : '+response.status)
+
+                $('#sub-tot').text('₹' + (response.subtotal+response.discount))
+                $('#tax').text('₹' + response.tax)
+                if (response.discount != 0){
+                    $('#disc').text('₹'+response.discount)
+                    $('#disc-row').css({'display':'table-row'})
+                }
+                $('#grand-total').text('₹' + response.order_total)
+                
+
+                $.each(response.ordered_products, function(index, item){
+                    var newRow              = $('<tr>').addClass('text-center');
+                    var productNameCell     = $('<td>').text(item.product_name)
+                    var productDetails      = $('<p>').addClass('text-muted small').html('Flavour : '+ item.flavour + '<br>Weight : '+ item.weight);
+                    
+                    productNameCell.append(productDetails) 
+                    var quantityCell        = $('<td>').addClass('text-center').html(item.quantity)
+                    var priceCell           = $('<td>').addClass('text-center').html('₹'+item.product_price)
+                    var totalPriceCell      = $('<td>').addClass('text-center').html('₹'+item.quantity*item.product_price)
+                        
+                    newRow.append(productNameCell,quantityCell,priceCell,totalPriceCell)
+                    $('#table-prod tbody').append(newRow);
+                    
+                })
+
+                
+                
+            }
+        })
+    });
+
+    $('#closeInvoice').on('click',function(){
+        $("#modalContainer").css({
+            'display':'none',
+        })
+    });
+
+
+
+</script>
+
+
+{% endblock script %}

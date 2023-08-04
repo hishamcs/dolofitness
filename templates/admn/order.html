@@ -1,0 +1,69 @@
+{% extends 'admn/base.html' %}
+{% load static %}
+{% block content %}
+
+<section class="content-main">
+    <div class="content-header">
+        <div>
+            <h2 class="content-title card-title">Order List </h2>
+            
+        </div>
+    </div>
+    <div class="card mb-4">
+        
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover" id='ordersListTable'>
+                    <thead>
+                        <tr>
+                            <th class="text-center">#Order Number</th>
+                            <th scope="col" class="text-center">Ordered Account</th>
+                            <th scope="col" class="text-center">Billing Name</th>
+                            <th scope="col" class="text-center">Address</th>
+                            {% comment %} <th scope="col" class="text-center">Total</th> {% endcomment %}
+                            {% comment %} <th scope="col" class="text-center">Status</th> {% endcomment %}
+                            <th scope="col" class="text-center">Order Date</th>
+                            <th scope="col" class="text-center"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for order in orders %}
+                        <tr>
+                            <td class="text-center">{{order.order_number}}</td>
+                            <td class="text-center">{{order.user}}</td>
+                            <td class="text-center"><b>{{order.address.full_name}}</b></td>
+                            <td class="text-center">{{order.address.full_address}}</td>
+                            {% comment %} <td class="text-center">₹{{order.order_total}}</td> {% endcomment %}
+                            {% comment %} <td class="text-center"><span class="badge rounded-pill alert-warning">{{order.status}}</span></td> {% endcomment %}
+                            <td class="text-center">{{order.order_date}}</td>
+                            <td class="text-center">
+                                <a href="{% url 'order_details' order.order_number %}" class="btn btn-md rounded font-sm">Detail</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div> <!-- table-responsive //end -->
+        </div> <!-- card-body end// -->
+    </div> <!-- card end// -->
+</section> <!-- content-main end// -->
+
+
+
+{% endblock content %}
+
+{% block script %}
+
+<script>
+    $('#ordersListTable').DataTable({
+        paging:true,
+        pageLength:10,
+        lengthChange:true,
+        autoWidth:true,
+        searching:true,
+        bInfo:true,
+        bSort:false,
+    })
+</script>
+
+{% endblock script %}

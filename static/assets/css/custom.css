@@ -1,0 +1,16 @@
+.list-group-item.active{
+    background-color: #088178;
+    border-color: #088178;
+}
+
+.highlight-card {
+    border: 2px solid #f8b739; /* Example: Yellow border */
+    box-shadow: 0 0 5px #f8b739; /* Example: Yellow shadow */
+}
+
+.other-addr {
+    padding: 10px;
+    background-color: #f7f8f9;
+    border-radius: 10px;
+    border: 1px solid #e2e9e1;
+}
