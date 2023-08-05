@@ -27,10 +27,11 @@
 
                         <tbody>
                             {% for user in users %}
+                            {% if not user.is_superuser %}
                             <tr style="border-bottom: 1px solid rgb(165, 162, 162) !important; ">
 
                                 <td style="vertical-align: middle" class="text-center">
-                                    <a href="" class="fw-bold"> {{user.username}}</a>
+                                    <a href="{% url 'user_details' user.id %}" class="fw-bold"> {{user.username}}</a>
                                 </td>
                                 <td style="vertical-align: middle" class="text-center">{{user.email}}</td>
                                 <td style="vertical-align: middle" class="text-center">{{user.phone_number}}</td>
@@ -52,6 +53,7 @@
                                 </td>
 
                             </tr>
+                            {% endif %}
                             {% endfor %}
                         </tbody>
                         

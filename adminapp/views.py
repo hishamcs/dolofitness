@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect,HttpResponse
 from product.models import Product,ProductImage,ProductVariation,Brand
 from category.models import Category
 from category.forms import CategoryForm
-from account.models import Account,Wallet
+from account.models import Account,Wallet,UserAddress,UserProfileImage
 from offers.models import Coupon
 from orders.models import Order,OrderProduct
 from django.http import JsonResponse
@@ -558,3 +558,20 @@ def ad_logout(reuqest):
     logout(reuqest)
     return redirect('admin_login')
 
+
+@login_required(login_url='admin_login')
+@never_cache
+def user_details(request, user_id):
+    user = Account.objects.get(id=user_id)
+    address = UserAddress.objects.filter(default_addr=True,user=user)
+    userprofile = UserProfileImage.objects.get(user=user)
+    orders = Order.objects.all().filter(user=user)
+    order_count = orders.count()
+    context = {
+        'orders':orders,
+        'user':user,
+        'order_count':order_count,
+        'address':address,
+        'userprofile':userprofile,
+    }
+    return render(request, 'admn/user_details.html', context)

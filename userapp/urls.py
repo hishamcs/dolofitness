@@ -29,6 +29,7 @@ urlpatterns = [
 
     path('error/', views.error_404, name='error_404'),
     
+    
 
     
 

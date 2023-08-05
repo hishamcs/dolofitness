@@ -45,5 +45,6 @@ urlpatterns = [
     path('ad-del-coupon/', views.del_coupon, name='del_coupon'),
     path('deact-coupon/', views.deact_coupon, name='deact_coupon'),
     path('deact-user/', views.deact_user, name='deact_user'),
+    path('user-details/<int:user_id>/', views.user_details, name='user_details'),
 
 ]

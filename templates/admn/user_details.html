@@ -1,0 +1,99 @@
+{% extends 'admn/base.html' %}
+{% load static %}
+{% block content %}
+
+<section class="content-main">
+    <div class="content-header">
+        <a href="javascript:history.back()"><i class="material-icons md-arrow_back"></i> Go back </a>
+    </div>
+    <div class="card mb-4">
+        <div class="card-header bg-primary" style="height:150px">
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-xl col-lg flex-grow-0" style="flex-basis:230px">
+                    <div class="img-thumbnail shadow w-100 bg-white position-relative text-center" style="height:190px; width:200px; margin-top:-120px">
+                        {% if userprofile.profile_pic %}
+                        <img src="{{userprofile.profile_pic.url}}" class="center-xy img-fluid" alt="Logo Brand">
+                        {% else %}
+                        <img src="{% static 'assets/imgs/theme/img_avatar.png' %}" class="center-xy img-fluid" alt="Logo Brand">
+                        {% endif %}
+                    </div>
+                </div> <!--  col.// -->
+                <div class="col-xl col-lg">
+                    <h3>{{user.username}}</h3>
+                    <p>Email : {{user.email}}</p>
+                </div> <!--  col.// -->
+                
+            </div> <!-- card-body.// -->
+            <hr class="my-4">
+            <div class="row g-4 d-flex justify-content-around">
+                <div class="col-md-12 col-lg-4 col-xl-2 text-center">
+                    <article class="box">
+                        <p class="mb-0 text-muted">Total orders:</p>
+                        <h5 class="text-success">{{order_count}}</h5>
+                        
+                    </article>
+                </div> <!--  col.// -->
+                {% if address %}
+                <div class="col-sm-6 col-lg-4 col-xl-3">
+                    <h6>Address</h6>
+                    <p>
+                     {{address.0.full_name}} <br>
+                        {{address.0.full_address}} <br>
+                        {{address.0.city}},&nbsp {{address.0.state}}<br>
+                        {{address.0.country}} - {{address.0.postcode}}
+                    </p>
+                </div> <!--  col.// -->
+                {% endif %}
+                
+            </div> <!--  row.// -->
+        </div> <!--  card-body.// -->
+    </div> <!--  card.// -->
+    {% if orders %}
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">Orders of the user</h5>
+            <div class="row">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover" id='ordersListTable'>
+                            <thead>
+                                <tr>
+                                    <th class="text-center">#Order Number</th>
+                                    
+                                    <th scope="col" class="text-center">Billing Name</th>
+                                    <th scope="col" class="text-center">Address</th>
+                                    
+                                    <th scope="col" class="text-center">Order Date</th>
+                                    <th scope="col" class="text-center"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for order in orders %}
+                                <tr>
+                                    <td class="text-center">{{order.order_number}}</td>
+                                    
+                                    <td class="text-center"><b>{{order.address.full_name}}</b></td>
+                                    <td class="text-center">{{order.address.full_address}}</td>
+                                    <td class="text-center">{{order.order_date}}</td>
+                                    <td class="text-center">
+                                        <a href="{% url 'order_details' order.order_number %}" class="btn btn-md rounded font-sm">Details</a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div> <!-- table-responsive //end -->
+                </div> <!-- card-body end// -->   
+            </div> <!-- row.// -->
+        </div> <!--  card-body.// -->
+    </div> <!--  card.// -->
+    {% else %}
+    <h5>There is no orders by the user</h5>
+    {% endif %}
+    
+</section>
+
+
+{% endblock content %}
