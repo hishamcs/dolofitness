@@ -622,6 +622,7 @@ function increment(cartitem_id, cartitem_quantity, cartitem_total_price) {
                     timer:4000,
                 }).then(function(){
                     $('#cartitem-table').load(location.href + ' #cartitem-table')
+                    $('#cartcount-block').load(location.href + ' #cartcount-block')
                 })
             }
             document.getElementById(cartitem_id).value = response.qty
